@@ -1,8 +1,8 @@
 // Buttons
-#define B1 13
-#define B2 12
-#define B3 11
-#define B4 10
+#define B1 12
+#define B2 11
+#define B3 10
+#define B4 9
 
 // 7-Segment Display
 #define Sf 7
@@ -13,77 +13,55 @@
 #define Sd 3
 #define Sc 2
 
-int numbers[10][4] = {
-  {0, 0, 0, 0}, // 0
-  {0, 0, 0, 1}, // 1
-  {0, 0, 1, 0}, // 2
-  {0, 0, 1, 1}, // 3
-  {0, 1, 0, 0}, // 4
-  {0, 1, 0, 1}, // 5
-  {0, 1, 1, 0}, // 6
-  {0, 1, 1, 1}, // 7
-  {1, 0, 0, 0}, // 8
-  {1, 0, 0, 1}  // 9
+byte number;
+byte lastNumber = 0;
+
+boolean numbers[10][4] = {
+  {false, false, false, false}, // 0
+  {false, false, false, true}, // 1
+  {false, false, true, false}, // 2
+  {false, false, true, true}, // 3
+  {false, true, false, false}, // 4
+  {false, true, false, true}, // 5
+  {false, true, true, false}, // 6
+  {false, true, true, true}, // 7
+  {true, false, false, false}, // 8
+  {true, false, false, true}  // 9
 };
 
-String segSt[10][7] = {
+boolean segSt[10][7] = {
   // Sf Sa Sb Sg Se Sd Sc
-  {"HIGH", "HIGH", "HIGH", "LOW", "HIGH", "HIGH", "HIGH"}, // 0
-  {"LOW", "LOW", "HIGH", "LOW", "LOW", "LOW", "HIGH"}, // 1
-  {"LOW", "HIGH", "HIGH", "HIGH", "HIGH", "HIGH", "LOW"}, // 2
-  {"LOW", "HIGH", "HIGH", "HIGH", "LOW", "HIGH", "HIGH"}, // 3
-  {"HIGH", "LOW", "HIGH", "HIGH", "LOW", "LOW", "HIGH"}, // 4
-  {"HIGH", "HIGH", "LOW", "HIGH", "LOW", "HIGH", "HIGH"}, // 5
-  {"HIGH", "HIGH", "LOW", "HIGH", "HIGH", "HIGH", "HIGH"}, // 6
-  {"LOW", "HIGH", "HIGH", "LOW", "LOW", "LOW", "HIGH"}, // 7
-  {"HIGH", "HIGH", "HIGH", "HIGH", "HIGH", "HIGH", "HIGH"}, // 8
-  {"HIGH", "HIGH", "HIGH", "HIGH", "LOW", "HIGH", "HIGH"}, // 9
+  {true, true, true, false, true, true, true}, // 0
+  {false, false, true, false, false, false, true}, // 1
+  {false, true, true, true, true, true, false}, // 2
+  {false, true, true, true, false, true, true}, // 3
+  {true, false, true, true, false, false, true}, // 4
+  {true, true, false, true, false, true, true}, // 5
+  {true, true, false, true, true, true, true}, // 6
+  {false, true, true, false, false, false, true}, // 7
+  {true, true, true, true, true, true, true}, // 8
+  {true, true, true, true, false, true, true}, // 9
 };
 
 void displayNum(int c) {
-  if (segSt[c][0] == "HIGH"){
-    digitalWrite(Sf, HIGH);
-  } else {
-    digitalWrite(Sf, LOW);
-  }
-  if (segSt[c][1] == "HIGH"){
-    digitalWrite(Sa, HIGH);   
-  } else {
-    digitalWrite(Sa, LOW);
-  }
-  if (segSt[c][2] == "HIGH"){
-    digitalWrite(Sb, HIGH);  
-  } else {
-    digitalWrite(Sb, LOW);
-  }
-  if (segSt[c][3] == "HIGH"){
-    digitalWrite(Sg, HIGH);   
-  } else {
-    digitalWrite(Sg, LOW);
-  }
-  if (segSt[c][4] == "HIGH"){
-    digitalWrite(Se, HIGH);   
-  } else {
-    digitalWrite(Se, LOW);
-  }
-  if (segSt[c][5] == "HIGH"){
-    digitalWrite(Sd, HIGH);   
-  } else {
-    digitalWrite(Sd, LOW);
-  }
-  if (segSt[c][6] == "HIGH"){
-    digitalWrite(Sc, HIGH);   
-  } else {
-    digitalWrite(Sc, LOW);
-  }
+  if (segSt[c][0]) digitalWrite(Sf, HIGH);
+  else digitalWrite(Sf, LOW);
+  if (segSt[c][1]) digitalWrite(Sa, HIGH);   
+  else digitalWrite(Sa, LOW);
+  if (segSt[c][2]) digitalWrite(Sb, HIGH);  
+  else digitalWrite(Sb, LOW);
+  if (segSt[c][3]) digitalWrite(Sg, HIGH);   
+  else digitalWrite(Sg, LOW);
+  if (segSt[c][4]) digitalWrite(Se, HIGH);   
+  else digitalWrite(Se, LOW);
+  if (segSt[c][5]) digitalWrite(Sd, HIGH);   
+  else digitalWrite(Sd, LOW);
+  if (segSt[c][6]) digitalWrite(Sc, HIGH);   
+  else digitalWrite(Sc, LOW);
 }
 
-bool compareArray(int arr1[], int arr2[], int sizeArrs) {
-  for (int i = 0; i <= sizeArrs; i++) {
-    if (arr1[i] != arr2[i]) {
-      return false;
-    }
-  }
+bool compare(byte Key[], boolean numbers[]) {
+  for (byte i = 0; i <= 3; ++i) if (Key[i] != numbers[i] == 1 ? true : false) return false;
   return true;
 }
 
@@ -100,18 +78,12 @@ void setup() {
   pinMode(B2, INPUT);
   pinMode(B3, INPUT);
   pinMode(B4, INPUT);
-
-  Serial.begin(9600);
 }
 
 void loop() {
-  int Key[] = {digitalRead(B1), digitalRead(B2), digitalRead(B3), digitalRead(B4)};
-  int number;
+  byte Key[] = {digitalRead(B1), digitalRead(B2), digitalRead(B3), digitalRead(B4)};
   
-  for (int i = 0; i <= 9; i++) {
-    if (compareArray(Key, numbers[i], 3)) {
-      number = i;
-    }
-  }
-  displayNum(number);
+  for (byte i = 0; i <= 9; ++i) if (compare(Key, numbers[i])) number = i;
+  if (number != lastNumber) displayNum(number); 
+  lastNumber = number;
 }
