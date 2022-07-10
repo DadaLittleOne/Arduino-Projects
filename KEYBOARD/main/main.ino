@@ -40,7 +40,7 @@ boolean segSt[10][7] = {
   {true, true, false, true, true, true, true}, // 6
   {false, true, true, false, false, false, true}, // 7
   {true, true, true, true, true, true, true}, // 8
-  {true, true, true, true, false, true, true}, // 9
+  {true, true, true, true, false, true, true} // 9
 };
 
 void displayNum(int c) {
@@ -53,10 +53,12 @@ void displayNum(int c) {
   segSt[c][6] ? digitalWrite(Sc, HIGH) : digitalWrite(Sc, LOW);
 }
 
-bool compare(byte Key[], boolean numbers[]) {
-  for (byte i = 0; i <= 3; ++i) if (Key[i] != numbers[i] == 1 ? true : false) return false;
+bool compare(boolean Key[], boolean numbers[]) {
+  for (byte i = 0; i <= 3; ++i) if (!Key[i] && numbers[i]) return false;
   return true;
 }
+
+void doNothing() {}
 
 void setup() {
   pinMode(Sf, OUTPUT);
@@ -74,9 +76,9 @@ void setup() {
 }
 
 void loop() {
-  byte Key[] = {digitalRead(B1), digitalRead(B2), digitalRead(B3), digitalRead(B4)};
+  boolean Key[] = {digitalRead(B1), digitalRead(B2), digitalRead(B3), digitalRead(B4)};
   
   for (byte i = 0; i <= 9; ++i) if (compare(Key, numbers[i])) number = i;
-  if (number != lastNumber) displayNum(number); 
+  number != lastNumber ? displayNum(number) : doNothing(); 
   lastNumber = number;
 }
