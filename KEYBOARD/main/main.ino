@@ -1,14 +1,14 @@
 // Buttons
-#define B1 12
-#define B2 11
-#define B3 10
-#define B4 9
+#define B1 13
+#define B2 12
+#define B3 11
+#define B4 10
 
 // 7-Segment Display
+#define Sg 8
 #define Sf 7
 #define Sa 6
 #define Sb 5
-#define Sg 8
 #define Se 4
 #define Sd 3
 #define Sc 2
@@ -44,20 +44,13 @@ boolean segSt[10][7] = {
 };
 
 void displayNum(int c) {
-  if (segSt[c][0]) digitalWrite(Sf, HIGH);
-  else digitalWrite(Sf, LOW);
-  if (segSt[c][1]) digitalWrite(Sa, HIGH);   
-  else digitalWrite(Sa, LOW);
-  if (segSt[c][2]) digitalWrite(Sb, HIGH);  
-  else digitalWrite(Sb, LOW);
-  if (segSt[c][3]) digitalWrite(Sg, HIGH);   
-  else digitalWrite(Sg, LOW);
-  if (segSt[c][4]) digitalWrite(Se, HIGH);   
-  else digitalWrite(Se, LOW);
-  if (segSt[c][5]) digitalWrite(Sd, HIGH);   
-  else digitalWrite(Sd, LOW);
-  if (segSt[c][6]) digitalWrite(Sc, HIGH);   
-  else digitalWrite(Sc, LOW);
+  segSt[c][0] ? digitalWrite(Sf, HIGH) : digitalWrite(Sf, LOW);
+  segSt[c][1] ? digitalWrite(Sa, HIGH) : digitalWrite(Sa, LOW);
+  segSt[c][2] ? digitalWrite(Sb, HIGH) : digitalWrite(Sb, LOW);
+  segSt[c][3] ? digitalWrite(Sg, HIGH) : digitalWrite(Sg, LOW);
+  segSt[c][4] ? digitalWrite(Se, HIGH) : digitalWrite(Se, LOW);
+  segSt[c][5] ? digitalWrite(Sd, HIGH) : digitalWrite(Sd, LOW);
+  segSt[c][6] ? digitalWrite(Sc, HIGH) : digitalWrite(Sc, LOW);
 }
 
 bool compare(byte Key[], boolean numbers[]) {
