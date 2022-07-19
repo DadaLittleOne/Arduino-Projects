@@ -1,2 +1,5 @@
 # Arduino Projects
- A collection of Arduino projects made by Raiyaxi Ziaoi AKA DadaLittleOne
+
+<div align="center"><h2>
+    A collection of Arduino projects <br/></br>Made by Raiyaxi Ziaoi
+</h2></div>
