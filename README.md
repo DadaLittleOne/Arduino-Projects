@@ -1,3 +1,5 @@
+<img src="https://i.imgur.com/lRzzpEU.png"></img>
+
 # Arduino Projects
 
 <div align="center"><h2>
